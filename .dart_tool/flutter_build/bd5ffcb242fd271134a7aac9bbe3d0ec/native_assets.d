@@ -1,1 +1,0 @@
- F:\\flutter\ projectts\\cookin\\.dart_tool\\flutter_build\\bd5ffcb242fd271134a7aac9bbe3d0ec\\native_assets.yaml: 
