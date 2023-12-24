@@ -1,0 +1,1 @@
+ C:\\Users\\User\\Downloads\\cookin\\.dart_tool\\flutter_build\\f0c2b004283c887bdc696b04c72db03e\\native_assets.yaml: 
