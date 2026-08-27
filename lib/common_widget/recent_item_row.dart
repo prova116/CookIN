@@ -16,7 +16,6 @@ class RecentItemRow extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.asset(
@@ -29,13 +28,10 @@ class RecentItemRow extends StatelessWidget {
             const SizedBox(
               width: 8,
             ),
-
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-
                   Text(
                     rObj["name"],
                     textAlign: TextAlign.center,
@@ -53,7 +49,8 @@ class RecentItemRow extends StatelessWidget {
                       Text(
                         rObj["type"],
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: TColor.secondaryText, fontSize: 11),
+                        style: TextStyle(
+                            color: TColor.secondaryText, fontSize: 11),
                       ),
                       Text(
                         " . ",
@@ -63,9 +60,9 @@ class RecentItemRow extends StatelessWidget {
                       Text(
                         rObj["food_type"],
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: TColor.secondaryText, fontSize: 12),
+                        style: TextStyle(
+                            color: TColor.secondaryText, fontSize: 12),
                       ),
-
                     ],
                   ),
                   const SizedBox(
@@ -74,15 +71,12 @@ class RecentItemRow extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-
-
                       Image.asset(
                         "assets/img/rate.png",
                         width: 10,
                         height: 10,
                         fit: BoxFit.cover,
                       ),
-
                       const SizedBox(
                         width: 4,
                       ),
@@ -91,13 +85,11 @@ class RecentItemRow extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(color: TColor.primary, fontSize: 11),
                       ),
-
                       const SizedBox(
                         width: 8,
                       ),
-
                       Text(
-                        "(${ rObj["rating"] } Ratings)",
+                        "(${rObj["rating"]} Ratings)",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: TColor.secondaryText, fontSize: 11),

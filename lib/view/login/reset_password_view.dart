@@ -1,4 +1,5 @@
-import 'package:cookin/common/color_extention.dart/color_extension.dart';
+import 'package:cookin/common/auth_service.dart';
+import 'package:cookin/common/color_extension.dart';
 import 'package:cookin/common_widget/round_button.dart';
 import 'package:cookin/view/login/new_password_view.dart';
 import 'package:flutter/material.dart';
@@ -60,10 +61,18 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               RoundButton(
                   title: "Send",
                   onPressed: () {
+                    if (!AuthService.instance.accountExists(txtEmail.text)) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text("No account found for this email")),
+                      );
+                      return;
+                    }
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const NewPasswordView(),
+                        builder: (context) =>
+                            NewPasswordView(email: txtEmail.text),
                       ),
                     );
                   }),

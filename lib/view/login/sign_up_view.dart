@@ -1,11 +1,9 @@
-import 'package:cookin/common/color_extention.dart/color_extension.dart';
+import 'package:cookin/common/auth_service.dart';
+import 'package:cookin/common/color_extension.dart';
 import 'package:cookin/common_widget/round_button.dart';
-//import 'package:cookin/common_widget/round_button.dart';
-//import 'package:cookin/common_widget/round_icon_button.dart';
 import 'package:cookin/view/login/login_view.dart';
 import 'package:cookin/view/login/otp_view.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter/services.dart';
 
 import '../../common_widget/round_textfield.dart';
 
@@ -105,6 +103,20 @@ class _LoginViewState extends State<SignUpView> {
               RoundButton(
                   title: "Sign Up",
                   onPressed: () {
+                    final error = AuthService.instance.register(
+                      name: txtName.text,
+                      phone: txtMobile.text,
+                      address: txtAddress.text,
+                      email: txtEmail.text,
+                      password: txtPassword.text,
+                      confirmPassword: txtConfirmPassword.text,
+                    );
+                    if (error != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(error)),
+                      );
+                      return;
+                    }
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -125,12 +137,15 @@ class _LoginViewState extends State<SignUpView> {
                   );
                 },
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  Text(
-                    "Already have an Account?",
-                    style: TextStyle(
-                        color: TColor.secondaryText,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500),
+                  Flexible(
+                    child: Text(
+                      "Already have an Account? ",
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: TColor.secondaryText,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                   Text(
                     "Login",

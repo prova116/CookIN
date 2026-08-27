@@ -5,7 +5,7 @@ import '../common/color_extension.dart';
 class CategoryCell extends StatelessWidget {
   final Map cObj;
   final VoidCallback onTap;
-  const CategoryCell({super.key, required this.cObj, required this.onTap });
+  const CategoryCell({super.key, required this.cObj, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

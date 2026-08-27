@@ -1,11 +1,15 @@
-import 'package:cookin_03/common%20widget/category_cell.dart';
-import 'package:cookin_03/common%20widget/most_popular_cell.dart';
-import 'package:cookin_03/common%20widget/popular_resutaurant_row.dart';
-import 'package:cookin_03/common%20widget/recent_item_row.dart';
-import 'package:cookin_03/common%20widget/round_textfield.dart';
-import 'package:cookin_03/common%20widget/view_all_title_row.dart';
-import 'package:cookin_03/common/color_extension.dart';
+import 'package:cookin/common_widget/category_cell.dart';
+import 'package:cookin/common_widget/most_popular_cell.dart';
+import 'package:cookin/common_widget/popular_resutaurant_row.dart';
+import 'package:cookin/common_widget/recent_item_row.dart';
+import 'package:cookin/common_widget/round_textfield.dart';
+import 'package:cookin/common_widget/view_all_title_row.dart';
+import 'package:cookin/common/cart_service.dart';
+import 'package:cookin/common/color_extension.dart';
 import 'package:flutter/material.dart';
+
+import 'cart_view.dart';
+import 'food_detail_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -30,7 +34,8 @@ class _HomeViewState extends State<HomeView> {
       "rate": "4.9",
       "rating": "124",
       "type": "Cafa",
-      "food_type": "Western Food"
+      "food_type": "Western Food",
+      "price": 12.99,
     },
     {
       "image": "assets/img/res_2.png",
@@ -38,7 +43,8 @@ class _HomeViewState extends State<HomeView> {
       "rate": "4.9",
       "rating": "124",
       "type": "Cafa",
-      "food_type": "Western Food"
+      "food_type": "Western Food",
+      "price": 9.49,
     },
     {
       "image": "assets/img/res_3.png",
@@ -46,7 +52,8 @@ class _HomeViewState extends State<HomeView> {
       "rate": "4.9",
       "rating": "124",
       "type": "Cafa",
-      "food_type": "Western Food"
+      "food_type": "Western Food",
+      "price": 14.25,
     },
   ];
   List mostPopArr = [
@@ -56,7 +63,8 @@ class _HomeViewState extends State<HomeView> {
       "rate": "4.9",
       "rating": "124",
       "type": "Cafa",
-      "food_type": "Western Food"
+      "food_type": "Western Food",
+      "price": 15.99,
     },
     {
       "image": "assets/img/m_res_2.png",
@@ -64,7 +72,8 @@ class _HomeViewState extends State<HomeView> {
       "rate": "4.9",
       "rating": "124",
       "type": "Cafa",
-      "food_type": "Western Food"
+      "food_type": "Western Food",
+      "price": 11.49,
     },
   ];
   List recentArr = [
@@ -74,7 +83,8 @@ class _HomeViewState extends State<HomeView> {
       "rate": "4.9",
       "rating": "124",
       "type": "Cafa",
-      "food_type": "Western Food"
+      "food_type": "Western Food",
+      "price": 8.99,
     },
     {
       "image": "assets/img/item_2.png",
@@ -82,7 +92,8 @@ class _HomeViewState extends State<HomeView> {
       "rate": "4.9",
       "rating": "124",
       "type": "Cafa",
-      "food_type": "Western Food"
+      "food_type": "Western Food",
+      "price": 6.49,
     },
     {
       "image": "assets/img/item_3.png",
@@ -90,9 +101,23 @@ class _HomeViewState extends State<HomeView> {
       "rate": "4.9",
       "rating": "124",
       "type": "Cafa",
-      "food_type": "Western Food"
+      "food_type": "Western Food",
+      "price": 13.99,
     },
   ];
+
+  void _openDetail(Map item) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => FoodDetailView(item: item)),
+    );
+  }
+
+  void _notYetAvailable(String what) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("$what is coming soon")),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,20 +134,61 @@ class _HomeViewState extends State<HomeView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Good morning Akila!",
-                    style: TextStyle(
-                        color: TColor.primaryText,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Image.asset(
-                      "assets/img/shopping_cart.png",
-                      width: 25,
-                      height: 25,
+                  Expanded(
+                    child: Text(
+                      "Good morning Akila!",
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: TColor.primaryText,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800),
                     ),
+                  ),
+                  ValueListenableBuilder<List<CartItem>>(
+                    valueListenable: CartService.instance,
+                    builder: (context, items, _) {
+                      final count = CartService.instance.itemCount;
+                      return Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const CartView(),
+                                ),
+                              );
+                            },
+                            icon: Image.asset(
+                              "assets/img/shopping_cart.png",
+                              width: 25,
+                              height: 25,
+                            ),
+                          ),
+                          if (count > 0)
+                            Positioned(
+                              right: 2,
+                              top: 2,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 1),
+                                decoration: BoxDecoration(
+                                  color: TColor.primary,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  "$count",
+                                  style: TextStyle(
+                                      color: TColor.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ),
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),
@@ -158,13 +224,11 @@ class _HomeViewState extends State<HomeView> {
                       const SizedBox(
                         width: 25,
                       ),
-
-                         Image.asset(
-                          "assets/img/dropdown.png",
-                          width: 12,
-                          height: 12,
-                        ),
-
+                      Image.asset(
+                        "assets/img/dropdown.png",
+                        width: 12,
+                        height: 12,
+                      ),
                     ],
                   ),
                   const SizedBox(
@@ -199,7 +263,8 @@ class _HomeViewState extends State<HomeView> {
                         var cObj = catArr[index] as Map? ?? {};
                         return CategoryCell(
                           cObj: cObj,
-                          onTap: () {},
+                          onTap: () =>
+                              _notYetAvailable("${cObj["name"]} category"),
                         );
                       }),
                     ),
@@ -208,7 +273,7 @@ class _HomeViewState extends State<HomeView> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: ViewAllTitleRow(
                       title: " Popular Restaurants",
-                      onView: () {},
+                      onView: () => _notYetAvailable("Popular Restaurants list"),
                     ),
                   ),
                   ListView.builder(
@@ -220,7 +285,7 @@ class _HomeViewState extends State<HomeView> {
                       var pObj = popArr[index] as Map? ?? {};
                       return PopularRestaurantRow(
                         pObj: pObj,
-                        onTap: () {},
+                        onTap: () => _openDetail(pObj),
                       );
                     }),
                   ),
@@ -228,7 +293,7 @@ class _HomeViewState extends State<HomeView> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: ViewAllTitleRow(
                       title: "Most Popular",
-                      onView: () {},
+                      onView: () => _notYetAvailable("Most Popular list"),
                     ),
                   ),
                   SizedBox(
@@ -241,7 +306,7 @@ class _HomeViewState extends State<HomeView> {
                         var mObj = mostPopArr[index] as Map? ?? {};
                         return MostPopularCell(
                           mObj: mObj,
-                          onTap: () {},
+                          onTap: () => _openDetail(mObj),
                         );
                       }),
                     ),
@@ -250,7 +315,7 @@ class _HomeViewState extends State<HomeView> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: ViewAllTitleRow(
                       title: "Recent Items",
-                      onView: () {},
+                      onView: () => _notYetAvailable("Recent Items list"),
                     ),
                   ),
                 ],
@@ -265,7 +330,7 @@ class _HomeViewState extends State<HomeView> {
                 var rObj = recentArr[index] as Map? ?? {};
                 return RecentItemRow(
                   rObj: rObj,
-                  onTap: () {},
+                  onTap: () => _openDetail(rObj),
                 );
               }),
             ),

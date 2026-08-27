@@ -5,7 +5,8 @@ import '../common/color_extension.dart';
 class PopularRestaurantRow extends StatelessWidget {
   final Map pObj;
   final VoidCallback onTap;
-  const PopularRestaurantRow({super.key, required this.pObj, required this.onTap});
+  const PopularRestaurantRow(
+      {super.key, required this.pObj, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +26,9 @@ class PopularRestaurantRow extends StatelessWidget {
             const SizedBox(
               width: 8,
             ),
-
             const SizedBox(
               height: 12,
             ),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -46,64 +45,54 @@ class PopularRestaurantRow extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  // Wrap rather than Row: on a narrow phone the rating and
+                  // cuisine metadata does not fit on one line.
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 8,
+                    runSpacing: 4,
                     children: [
-
-                      Image.asset(
-                        "assets/img/rate.png",
-                        width: 10,
-                        height: 10,
-                        fit: BoxFit.cover,
-                      ),
-
-                      const SizedBox(
-                        width: 4,
-                      ),
-
-                      Text(
-                        pObj["rate"],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: TColor.primary, fontSize: 11),
-                      ),
-                      const SizedBox(
-                        width: 8,
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(
+                            "assets/img/rate.png",
+                            width: 10,
+                            height: 10,
+                            fit: BoxFit.cover,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            pObj["rate"],
+                            style:
+                                TextStyle(color: TColor.primary, fontSize: 11),
+                          ),
+                        ],
                       ),
                       Text(
                         "(${pObj["rating"]} Ratings)",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: TColor.secondaryText, fontSize: 11),
+                        style:
+                            TextStyle(color: TColor.secondaryText, fontSize: 11),
                       ),
-
-                      const SizedBox(
-                        width: 8,
-                      ),
-
                       Text(
                         pObj["type"],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: TColor.secondaryText, fontSize: 11),
+                        style:
+                            TextStyle(color: TColor.secondaryText, fontSize: 11),
                       ),
                       Text(
-                        " . ",
-                        textAlign: TextAlign.center,
+                        ".",
                         style: TextStyle(color: TColor.primary, fontSize: 11),
                       ),
                       Text(
                         pObj["food_type"],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: TColor.secondaryText, fontSize: 12),
+                        style:
+                            TextStyle(color: TColor.secondaryText, fontSize: 12),
                       ),
                     ],
                   ),
-
                 ],
               ),
             ),
-
           ],
         ),
       ),
