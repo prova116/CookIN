@@ -1,10 +1,8 @@
-import 'package:cookin/common/color_extention.dart/color_extension.dart';
+import 'package:cookin/common/color_extension.dart';
 import 'package:cookin/common_widget/round_button.dart';
-//import 'package:cookin/view/login/new_password_view.dart';
+import 'package:cookin/view/login/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:otp_pin_field/otp_pin_field.dart';
-
-//import '../../common_widget/round_textfield.dart';
 
 class OtpView extends StatefulWidget {
   const OtpView({super.key});
@@ -15,6 +13,7 @@ class OtpView extends StatefulWidget {
 
 class _OtpViewState extends State<OtpView> {
   final _otpPinFieldController = GlobalKey<OtpPinFieldState>();
+  String _enteredCode = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,19 +60,14 @@ class _OtpViewState extends State<OtpView> {
 
                     ///in case you want to change the action of keyboard
                     /// to clear the Otp pin Controller
+                    // onCodeChanged only fires for SMS auto-fill (disabled
+                    // above), never for normal typing - onChange/onSubmit are
+                    // the real per-keystroke callbacks for manual entry.
                     onSubmit: (text) {
-                      // print('Entered pin is $text');
-
-                      /// return the entered pin
+                      _enteredCode = text;
                     },
                     onChange: (text) {
-                      //  print('Enter on change pin is $text');
-
-                      /// return the entered pin
-                    },
-                    onCodeChanged: (code) {
-                      //  print('onCodeChanged  is $code');
-                      FocusScope.of(context).requestFocus(FocusNode());
+                      _enteredCode = text;
                     },
 
                     /// to decorate your Otp_Pin_Field
@@ -99,18 +93,11 @@ class _OtpViewState extends State<OtpView> {
                     cursorColor: Colors.indigo,
 
                     /// to choose cursor color
-                    upperChild: const Column(
-                      children: [
-                        SizedBox(height: 30),
-                        Icon(Icons.flutter_dash_outlined, size: 150),
-                        SizedBox(height: 20),
-                      ],
-                    ),
-                    showCustomKeyboard: true,
-
-                    ///bool which manage to show custom keyboard
-                    // customKeyboard: Container(),
-                    /// Widget which help you to show your own custom keyboard in place if default custom keyboard
+                    // The on-screen custom keypad makes the field read-only to
+                    // the real keyboard and needs far more height than this
+                    // screen gives it, so it renders broken/unusable. Use the
+                    // normal system keyboard instead.
+                    showCustomKeyboard: false,
                     showDefaultKeyboard: true,
 
                     ///bool which manage to show default OS keyboard
@@ -133,16 +120,32 @@ class _OtpViewState extends State<OtpView> {
                   title: "Next",
                   onPressed: () {
                     FocusScope.of(context).requestFocus(FocusNode());
+                    if (_enteredCode.length < 4) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text("Please enter the 4-digit OTP")),
+                      );
+                      return;
+                    }
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => const LoginView(),
+                      ),
+                      (route) => false,
+                    );
                   }),
               TextButton(
                 onPressed: () {},
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  Text(
-                    "Didn't Received an OTP?",
-                    style: TextStyle(
-                        color: TColor.secondaryText,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500),
+                  Flexible(
+                    child: Text(
+                      "Didn't Received an OTP? ",
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: TColor.secondaryText,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                   Text(
                     "Click Here",

@@ -1,21 +1,23 @@
-import 'package:cookin_03/common/color_extension.dart';
+import 'package:cookin/common/color_extension.dart';
 import 'package:flutter/material.dart';
 
 //import '../common/color_extention.dart/color_extension.dart';
-
-
 
 class TabButton extends StatelessWidget {
   final VoidCallback onTap;
   final String title;
   final String icon;
   final bool isSelected;
-  const TabButton({super.key, required this.title, required this.icon , required this.onTap, required this.isSelected});
+  const TabButton(
+      {super.key,
+      required this.title,
+      required this.icon,
+      required this.onTap,
+      required this.isSelected});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-
       onTap: onTap,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -33,7 +35,7 @@ class TabButton extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-              color: isSelected ? TColor.primary :   TColor.placeholder,
+              color: isSelected ? TColor.primary : TColor.placeholder,
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),

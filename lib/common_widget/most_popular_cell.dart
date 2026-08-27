@@ -45,33 +45,27 @@ class MostPopularCell extends StatelessWidget {
                 Text(
                   mObj["type"],
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: TColor.secondaryText,
-                      fontSize: 12),
+                  style: TextStyle(color: TColor.secondaryText, fontSize: 12),
                 ),
-
                 Text(
                   " . ",
                   textAlign: TextAlign.center,
                   style: TextStyle(color: TColor.primary, fontSize: 12),
                 ),
-
                 Text(
                   mObj["food_type"],
                   textAlign: TextAlign.center,
                   style: TextStyle(color: TColor.secondaryText, fontSize: 12),
                 ),
-
                 const SizedBox(
                   width: 8,
                 ),
-
                 Image.asset(
                   "assets/img/rate.png",
                   width: 10,
                   height: 10,
                   fit: BoxFit.cover,
-                ) ,
+                ),
                 const SizedBox(
                   width: 4,
                 ),

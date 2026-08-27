@@ -1,11 +1,15 @@
-import 'package:cookin/common/color_extention.dart/color_extension.dart';
+import 'package:cookin/common/auth_service.dart';
+import 'package:cookin/common/color_extension.dart';
 import 'package:cookin/common_widget/round_button.dart';
+import 'package:cookin/view/login/login_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../common_widget/round_textfield.dart';
 
 class NewPasswordView extends StatefulWidget {
-  const NewPasswordView({super.key});
+  final String email;
+
+  const NewPasswordView({super.key, required this.email});
 
   @override
   State<NewPasswordView> createState() => _NewPasswordViewState();
@@ -62,7 +66,27 @@ class _NewPasswordViewState extends State<NewPasswordView> {
               const SizedBox(
                 height: 30,
               ),
-              RoundButton(title: "Next", onPressed: () {}),
+              RoundButton(
+                  title: "Next",
+                  onPressed: () {
+                    final error = AuthService.instance.resetPassword(
+                      email: widget.email,
+                      newPassword: txtPassword.text,
+                      confirmPassword: txtConfirmPassword.text,
+                    );
+                    if (error != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(error)),
+                      );
+                      return;
+                    }
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => const LoginView(),
+                      ),
+                      (route) => false,
+                    );
+                  }),
             ],
           ),
         ),

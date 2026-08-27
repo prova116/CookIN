@@ -1,6 +1,6 @@
-import 'package:cookin/common/color_extention.dart/color_extension.dart';
+//import 'package:cookin/common/color_extension.dart';
 import 'package:flutter/material.dart';
-//import '../common/color_extension.dart';
+import '../common/color_extension.dart';
 
 enum RoundButtonType { bgPrimary, textPrimary }
 

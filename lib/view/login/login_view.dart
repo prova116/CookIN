@@ -1,12 +1,13 @@
 //import 'dart:math';
 
-import 'package:cookin/common/color_extention.dart/color_extension.dart';
+import 'package:cookin/common/auth_service.dart';
+import 'package:cookin/common/color_extension.dart';
 import 'package:cookin/common_widget/round_button.dart';
 import 'package:cookin/common_widget/round_icon_button.dart';
 import 'package:cookin/view/login/reset_password_view.dart';
 import 'package:cookin/view/login/sign_up_view.dart';
+import 'package:cookin/view/main_tabview/main_tabview.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter/services.dart';
 
 import '../../common_widget/round_textfield.dart';
 
@@ -68,7 +69,26 @@ class _LoginViewState extends State<LoginView> {
               const SizedBox(
                 height: 20,
               ),
-              RoundButton(title: "Login", onPressed: () {}),
+              RoundButton(
+                  title: "Login",
+                  onPressed: () {
+                    final error = AuthService.instance.logIn(
+                      email: txtEmail.text,
+                      password: txtPassword.text,
+                    );
+                    if (error != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(error)),
+                      );
+                      return;
+                    }
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MainTabView(),
+                      ),
+                    );
+                  }),
               const SizedBox(
                 height: 4,
               ),
@@ -132,12 +152,15 @@ class _LoginViewState extends State<LoginView> {
                   );
                 },
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  Text(
-                    "Don't have an Account?",
-                    style: TextStyle(
-                        color: TColor.secondaryText,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500),
+                  Flexible(
+                    child: Text(
+                      "Don't have an Account? ",
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: TColor.secondaryText,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                   Text(
                     "Signup",
